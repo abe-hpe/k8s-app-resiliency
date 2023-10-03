@@ -6,7 +6,7 @@ rules:
   - apiGroups: ["apps"]
     resources: ["deployments", "replicasets", "pods", "statefulsets", "daemonsets"]
     verbs: ["get", "patch"]
----	
+---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
