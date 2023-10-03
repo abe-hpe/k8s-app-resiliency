@@ -1,0 +1,37 @@
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: resiliency
+rules:
+  - apiGroups: ["apps"]
+    resources: ["deployments", "replicasets", "pods", "statefulsets", "daemonsets"]
+    verbs: ["get", "patch"]
+---	
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: resiliency-sa
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: resiliency-crb
+subjects:
+  - kind: ServiceAccount
+    name: resiliency-sa
+    namespace: default
+roleRef:
+  kind: ClusterRole
+  name: resiliency
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: resiliency
+spec:
+  restartPolicy: OnFailure
+  serviceAccountName: resiliency-sa
+  containers:
+    - name: resiliency
+      image: abesharphpe/resiliencypod:v3
