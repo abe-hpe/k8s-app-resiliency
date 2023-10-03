@@ -1,16 +1,25 @@
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: resiliency
+  name: resiliency-cr
 rules:
   - apiGroups: ["apps"]
-    resources: ["deployments", "replicasets", "pods", "statefulsets", "daemonsets"]
-    verbs: ["get", "patch"]
+    resources: ["deployments", "replicasets", "statefulsets", "daemonsets"]
+    verbs: ["get", "patch", "list"]
+  - apiGroups: [""]
+    resources: ["namespaces", "pods"]
+    verbs: ["get", "list"]
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: resiliency
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: resiliency-sa
+  namespace: resiliency
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -19,19 +28,25 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: resiliency-sa
-    namespace: default
+    namespace: resiliency
 roleRef:
   kind: ClusterRole
-  name: resiliency
+  name: resiliency-cr
   apiGroup: rbac.authorization.k8s.io
 ---
-apiVersion: v1
-kind: Pod
+apiVersion: batch/v1
+kind: CronJob
 metadata:
-  name: resiliency
+  name: resilience-cronjob
+  namespace: resiliency
 spec:
-  restartPolicy: OnFailure
-  serviceAccountName: resiliency-sa
-  containers:
-    - name: resiliency
-      image: abesharphpe/resiliencypod:v3
+  schedule: "0,15,30,45 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          serviceAccountName: resiliency-sa
+          containers:
+          - name: job
+            image: abesharphpe/resiliencypod:v3
