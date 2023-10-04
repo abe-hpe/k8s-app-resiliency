@@ -6,8 +6,8 @@ This repo provides a kubernetes cronjob. associated RBAC and container image tha
 By using the 'rollout restart' method, applications themeselves will not become unavailable during the sequence of individual pod restarts, providing that your app pods have at least 2 replicase. You should carefully consider what daemonsets you apply this to, however. In the cases of daemonsets that provide storage, networking etc. to other pods on their nodes, restarts will cause a temporary loss of service to the 'client' pods.
 
 ## Getting started
-Git clone this repo
-Label all the namespaces in your cluster whose applications you want to be restarted: kubectl label ns <namespace name> abesharphpe/resiliency=restart
+Git clone this repo.
+Label all the namespaces in your cluster whose applications you want to be restarted: kubectl label ns <namespace name> abesharphpe/resiliency=restart.
 Apply the yaml file: kubectl apply -f *.yaml
 
 ## Advanced
