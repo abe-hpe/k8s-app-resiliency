@@ -3,6 +3,8 @@ All Kubernetes applications should be able to gracefully handle the deletion or 
 
 This repo provides a kubernetes cronjob. associated RBAC and container image that regularly rollout-restarts all deployments, statefulsets and daemonsets in selected namespaces. Namespaces are selected by applying the 'abesharphpe/resiliency=restart' label. The default restart period is daily at 2AM, but you can easily configure it for your needs by editing the cronjob spec in the YAML file.
 
+By using the 'rollout restart' method, applications themeselves will not become unavailable during the sequence of individual pod restarts, providing that your app pods have at least 2 replicase. You should carefully consider what daemonsets you apply this to, however. In the cases of daemonsets that provide storage, networking etc. to other pods on their nodes, restarts will cause a temporary loss of service to the 'client' pods.
+
 ## Getting started
 Git clone this repo
 Label all the namespaces in your cluster whose applications you want to be restarted: kubectl label ns <namespace name> abesharphpe/resiliency=restart
