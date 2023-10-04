@@ -40,7 +40,7 @@ metadata:
   name: resilience-cronjob
   namespace: resiliency
 spec:
-  schedule: "0,15,30,45 * * * *"
+  schedule: "0 2 * * *"
   jobTemplate:
     spec:
       template:
@@ -49,4 +49,4 @@ spec:
           serviceAccountName: resiliency-sa
           containers:
           - name: job
-            image: abesharphpe/resiliencypod:v3
+            image: abesharphpe/resiliencypod:v4
