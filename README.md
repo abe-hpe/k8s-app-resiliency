@@ -7,8 +7,8 @@ By using the 'rollout restart' method, applications themeselves will not become 
 
 ## Getting started
 Git clone this repo.
-Label all the namespaces in your cluster whose applications you want to be restarted: kubectl label ns <namespace name> abesharphpe/resiliency=restart.
-Apply the yaml file: kubectl apply -f *.yaml
+Label all the namespaces in your cluster whose applications you want to be restarted: `kubectl label ns <namespace name> abesharphpe/resiliency=restart`.
+Apply the yaml file: `kubectl apply -f *.yaml`
 
 ## Advanced
 Edit the Dockerfile to fine-tune the kubectl commands that select namespaces and restart the various application object types.
