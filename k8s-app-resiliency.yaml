@@ -49,4 +49,4 @@ spec:
           serviceAccountName: resiliency-sa
           containers:
           - name: job
-            image: abesharphpe/resiliencypod:v4
+            image: abesharphpe/resiliencypod:v5
